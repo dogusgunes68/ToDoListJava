@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".view.RegisterFragment"
+
+    >
+
+    <EditText
+        android:id="@+id/nameText"
+        android:layout_alignParentTop="true"
+        android:layout_centerInParent="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:layout_marginTop="100dp"
+        android:hint="Name" />
+
+    <EditText
+        android:id="@+id/surnameText"
+        android:layout_centerInParent="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:hint="Surname"
+        android:layout_marginTop="20dp"
+        android:layout_below="@+id/nameText"/>
+
+    <EditText
+        android:id="@+id/emailText"
+        android:layout_centerInParent="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:hint="E-Mail"
+        android:layout_marginTop="20dp"
+        android:layout_below="@+id/surnameText"/>
+
+    <EditText
+        android:id="@+id/passwordText"
+        android:layout_below="@+id/emailText"
+        android:layout_centerInParent="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:layout_marginTop="20dp"
+        android:inputType="textPassword"
+        android:hint="Password" />
+
+    <Button
+        android:id="@+id/registerButton"
+        android:layout_below="@id/passwordText"
+        android:layout_centerInParent="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Register Now" />
+</RelativeLayout>
+
