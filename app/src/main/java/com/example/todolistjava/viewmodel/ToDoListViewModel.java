@@ -22,13 +22,32 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class ToDoListViewModel extends ViewModel {
 
     private FirebaseFirestore firestore = FirebaseFirestore.getInstance();
-    private MutableLiveData<ArrayList<ToDo>> toDoList;
-    private ArrayList<ToDo> list;
     private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+
+    private MutableLiveData<List<ToDo>> toDoList = new MutableLiveData<>();
+    private MutableLiveData<ToDo> toDo = new MutableLiveData<>();
+    private MutableLiveData<Boolean> toDoLoading = new MutableLiveData<>();
+    private MutableLiveData<Boolean> errorMessage = new MutableLiveData<>();
+    private List<ToDo> tempToDoList = new ArrayList<>();
+    private ToDo tempToDo;
+
+    public void showToDoList(List<ToDo> takenToDoList){
+        toDoList.setValue(takenToDoList);
+        toDoLoading.setValue(false);
+        errorMessage.setValue(false);
+
+    }
+
+    public void showToDo(ToDo takenToDo){
+        toDo.setValue(takenToDo);
+        toDoLoading.setValue(false);
+        errorMessage.setValue(false);
+    }
 
     public void addUserOnFirebase(User user, Context context){
 
@@ -53,7 +72,13 @@ public class ToDoListViewModel extends ViewModel {
     }
 
     public void addToDoOnFirebase(ToDo toDo,Context context){
-        firestore.collection("ToDoList").add(toDo).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+        HashMap<String,Object> toDoMap = new HashMap<>();
+        toDoMap.put("toDoTitle",toDo.getToDoTitle());
+        toDoMap.put("toDoContent",toDo.getToDoContent());
+        toDoMap.put("toDoDate",toDo.getDate());
+        toDoMap.put("toDoUserEmail",toDo.getUserEmail());
+        toDoMap.put("toDoColor",toDo.getBackgroundColor());
+        firestore.collection("ToDoList").add(toDoMap).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
             @Override
             public void onSuccess(DocumentReference documentReference) {
                 Toast.makeText(context,"Successfuly",Toast.LENGTH_LONG).show();
@@ -66,9 +91,40 @@ public class ToDoListViewModel extends ViewModel {
         });
     }
 
+    public void getToDoByIdFromFirebase(Context context,Long toDoId){
+        toDoLoading.setValue(true);
+
+        firestore.collection("ToDoList").document(String.valueOf(toDoId)).addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+                if (error!=null){
+                    Toast.makeText(context,error.getMessage(),Toast.LENGTH_LONG).show();
+                    errorMessage.setValue(true);
+                }else {
+                    if (value != null){
+                        tempToDo = new ToDo(
+                                value.get("toDoTitle").toString(),
+                                value.get("toDoContent").toString(),
+                                value.get("toDoColor").toString(),
+                                value.get("toDoUserEmail").toString(),
+                                value.get("toDoDate").toString());
+
+
+                    }else {
+                        Toast.makeText(context,"Empty List",Toast.LENGTH_LONG).show();
+                    }
+                }
+                toDo.setValue(tempToDo);
+                tempToDo = new ToDo();
+            }
+        });
+    }
+
     public void getToDoListFromFirebase(Context context){
 
-        firestore.collection("ToDoList").whereEqualTo("useremail",firebaseAuth.getCurrentUser().getEmail()).addSnapshotListener(new EventListener<QuerySnapshot>() {
+        toDoLoading.setValue(true);
+
+        firestore.collection("ToDoList").whereEqualTo("toDoUserEmail",firebaseAuth.getCurrentUser().getEmail()).addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
                 if (error != null){
@@ -76,14 +132,15 @@ public class ToDoListViewModel extends ViewModel {
                 }else {
                     if (!value.getDocuments().isEmpty()){
                         for (Object document : value.getDocuments().toArray()){
-                            list.add((ToDo) document);
+                            tempToDoList.add((ToDo) document);
+
                         }
                     }else {
                         Toast.makeText(context,"Empty List",Toast.LENGTH_LONG).show();
                     }
                 }
-                toDoList.setValue(list);
-                list.clear();
+                showToDoList(tempToDoList);
+                tempToDoList.clear();
             }
         });
 

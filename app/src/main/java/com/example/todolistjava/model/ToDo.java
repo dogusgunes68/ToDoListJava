@@ -15,6 +15,10 @@ public class ToDo {
         this.date = date;
     }
 
+    public ToDo(){
+
+    }
+
     public String getToDoTitle() {
         return toDoTitle;
     }

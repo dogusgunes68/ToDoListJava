@@ -23,7 +23,7 @@ import com.google.firebase.auth.FirebaseAuth;
 public class LoginFragment extends Fragment {
 
     private FragmentLoginBinding fragmentBinding;
-    private FirebaseAuth firebaseAuth;
+    private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -58,11 +58,14 @@ public class LoginFragment extends Fragment {
             }
         });
 
+        if (firebaseAuth.getCurrentUser() != null){
+            Navigation.findNavController(this.getView()).navigate(R.id.action_loginFragment_to_toDoListFragment);
+        }
+
     }
 
     public void login(View view){
 
-        firebaseAuth = FirebaseAuth.getInstance();
         String email = fragmentBinding.emailText.getText().toString();
         String password = fragmentBinding.passwordText.getText().toString();
         firebaseAuth.signInWithEmailAndPassword(email,password).addOnSuccessListener(new OnSuccessListener<AuthResult>() {

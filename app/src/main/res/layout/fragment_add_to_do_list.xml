@@ -1,14 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".view.AddToDoListFragment">
 
+    <TextView
+        android:id="@+id/borderText"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:layout_alignParentTop="true"
+        android:background="@color/black"
+        android:layout_marginBottom="2dp"
+        >
+
+    </TextView>
+
     <EditText
-        android:id="@+id/editTextTextPassword"
-        android:layout_width="wrap_content"
+        android:layout_below="@+id/linearLayout"
+        android:id="@+id/toDoTitleText"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:textSize="24sp"
+        android:inputType="textMultiLine"
+        android:layout_marginBottom="2dp"
+        android:hint="Title">
+
+    </EditText>
+
+    <EditText
+        android:id="@+id/toDoContentText"
+        android:layout_below="@id/toDoTitleText"
+        android:layout_width="match_parent"
+        android:layout_height="430dp"
+        android:textSize="24sp"
+        android:inputType="textMultiLine || textLongMessage"
+        android:layout_marginBottom="2dp"
+        android:hint="Content">
+
+    </EditText>
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_below="@+id/borderText"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="textPassword" />
-</FrameLayout>
+        android:orientation="horizontal">
+
+        <Spinner
+            android:id="@+id/colorSpinner"
+            android:layout_width="180dp"
+            android:layout_height="70dp"
+            android:layout_margin="15dp"
+            >
+        </Spinner>
+
+        <Button
+            android:id="@+id/addButton"
+            style="?attr/materialButtonOutlinedStyle"
+            android:textColor="@color/teal_200"
+            app:strokeColor="@color/teal_200"
+            android:textSize="20sp"
+            android:layout_width="180dp"
+            android:layout_height="70dp"
+            android:layout_margin="15dp"
+            android:text="Add">
+
+        </Button>
+
+    </LinearLayout>
+
+</RelativeLayout>
