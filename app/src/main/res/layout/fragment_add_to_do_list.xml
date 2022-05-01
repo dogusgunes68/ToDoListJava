@@ -35,7 +35,7 @@
         android:layout_width="match_parent"
         android:layout_height="430dp"
         android:textSize="24sp"
-        android:inputType="textMultiLine || textLongMessage"
+        android:inputType="textMultiLine"
         android:layout_marginBottom="2dp"
         android:hint="Content">
 
