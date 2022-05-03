@@ -1,11 +1,14 @@
 package com.example.todolistjava.view;
 
 import android.app.Dialog;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -17,6 +20,10 @@ import android.widget.TextView;
 import com.example.todolistjava.R;
 import com.example.todolistjava.adapter.ColorRecyclerAdapter;
 import com.example.todolistjava.databinding.FragmentAddToDoListBinding;
+import com.example.todolistjava.model.ToDo;
+import com.example.todolistjava.viewmodel.ToDoListViewModel;
+import com.google.firebase.Timestamp;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -26,6 +33,8 @@ public class AddToDoListFragment extends Fragment {
 
     private FragmentAddToDoListBinding fragmentBinding;
     Dialog myDialog;
+    private ToDoListViewModel viewModel;
+    private FirebaseAuth firebaseAuth;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -47,10 +56,21 @@ public class AddToDoListFragment extends Fragment {
         fragmentBinding = FragmentAddToDoListBinding.bind(view);
         myDialog = new Dialog(getContext());
 
+        firebaseAuth = FirebaseAuth.getInstance();
+
+        viewModel = ViewModelProviders.of(this).get(ToDoListViewModel.class);
+
         fragmentBinding.colorsImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showColorsPopup();
+            }
+        });
+
+        fragmentBinding.addButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addToDo();
             }
         });
 
@@ -81,6 +101,23 @@ public class AddToDoListFragment extends Fragment {
         });
 
         myDialog.show();
+    }
+
+    public void addToDo(){
+        String toDoTitle = fragmentBinding.toDoTitleText.getText().toString();
+        String toDoContent = fragmentBinding.toDoContentText.getText().toString();
+        String userEmail = firebaseAuth.getCurrentUser().getEmail();
+        String date = Timestamp.now().toDate().toString();
+
+        String color = "#FFFFFFFF";
+        Drawable background = fragmentBinding.relativeLayout.getBackground();
+        if (background instanceof ColorDrawable)
+            color = String.valueOf(((ColorDrawable) background).getColor());
+
+        ToDo toDo = new ToDo(toDoTitle,toDoContent,userEmail,date,color);
+
+        viewModel.addToDoOnFirebase(toDo,getContext(),getView());
+
     }
 
 

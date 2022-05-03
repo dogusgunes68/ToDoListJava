@@ -2,13 +2,16 @@ package com.example.todolistjava.viewmodel;
 
 import android.app.Application;
 import android.content.Context;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
+import androidx.navigation.Navigation;
 
+import com.example.todolistjava.R;
 import com.example.todolistjava.model.ToDo;
 import com.example.todolistjava.model.User;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -77,18 +80,18 @@ public class ToDoListViewModel extends AndroidViewModel{
 
     }
 
-    public void addToDoOnFirebase(ToDo toDo,Context context){
+    public void addToDoOnFirebase(ToDo toDo, Context context, View view){
         HashMap<String,Object> toDoMap = new HashMap<>();
         toDoMap.put("toDoTitle",toDo.getToDoTitle());
         toDoMap.put("toDoContent",toDo.getToDoContent());
         toDoMap.put("toDoDate",toDo.getDate());
         toDoMap.put("toDoUserEmail",toDo.getUserEmail());
-        toDoMap.put("toDoDegree",toDo.getDegreeOfImportance());
         toDoMap.put("toDoColor",toDo.getColor());
         firestore.collection("ToDoList").add(toDoMap).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
             @Override
             public void onSuccess(DocumentReference documentReference) {
                 Toast.makeText(context,"Successfuly",Toast.LENGTH_LONG).show();
+                Navigation.findNavController(view).navigate(R.id.action_addToDoListFragment_to_toDoListFragment);
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -114,7 +117,6 @@ public class ToDoListViewModel extends AndroidViewModel{
                         tempToDo = new ToDo(
                                 value.get("toDoTitle").toString(),
                                 value.get("toDoContent").toString(),
-                                value.get("toDoDegree").toString(),
                                 value.get("toDoUserEmail").toString(),
                                 value.get("toDoDate").toString(),
                                 value.get("toDoColor").toString());

@@ -3,15 +3,15 @@ package com.example.todolistjava.model;
 public class ToDo {
     private String toDoTitle;
     private String toDoContent;
-    private String degreeOfImportance;
     private String userEmail;
     private String date;
     private String color;
 
-    public ToDo(String toDoTitle, String toDoContent, String degreeOfImportance, String userEmail, String date,String color){
+    String id = null;
+
+    public ToDo(String toDoTitle, String toDoContent, String userEmail, String date,String color){
         this.toDoTitle = toDoTitle;
         this.toDoContent = toDoContent;
-        this.degreeOfImportance = degreeOfImportance;
         this.userEmail = userEmail;
         this.date = date;
         this.color = color;
@@ -43,14 +43,6 @@ public class ToDo {
 
     public void setToDoContent(String toDoContent) {
         this.toDoContent = toDoContent;
-    }
-
-    public String getDegreeOfImportance() {
-        return degreeOfImportance;
-    }
-
-    public void setDegreeOfImportance(String degreeOfImportance) {
-        this.degreeOfImportance = degreeOfImportance;
     }
 
     public String getUserEmail() {
