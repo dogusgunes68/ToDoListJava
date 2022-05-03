@@ -44,32 +44,19 @@
             android:textColor="@color/black"
             android:textStyle="bold"
             android:background="@color/white"
-            app:icon="@android:drawable/ic_input_add"
             android:textSize="20sp"
-            android:layout_width="130dp"
+            android:layout_width="180dp"
             android:layout_height="60dp"
-            android:layout_margin="15dp"
-            android:text="Add">
+            android:layout_margin="20dp"
+            android:text="Add to do">
 
         </Button>
-
-        <ImageView
-            android:id="@+id/warningImageView"
-            android:layout_width="90dp"
-            android:layout_height="60dp"
-            android:layout_gravity="center"
-            android:background="@drawable/cercle_background"
-            android:layout_marginLeft="15dp">
-
-        </ImageView>
 
         <ImageView
             android:id="@+id/colorsImageView"
             android:layout_width="90dp"
             android:layout_height="60dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="15dp"
-            android:layout_marginLeft="20dp"
+            android:layout_margin="20dp"
             android:background="@drawable/ic_baseline_color_lens_24"
             >
 
