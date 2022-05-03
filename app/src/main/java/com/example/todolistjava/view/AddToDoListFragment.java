@@ -116,7 +116,7 @@ public class AddToDoListFragment extends Fragment {
 
         ToDo toDo = new ToDo(toDoTitle,toDoContent,userEmail,date,color);
 
-        viewModel.addToDoOnFirebase(toDo,getContext(),getView());
+        viewModel.addToDoToFirebase(toDo,getContext(),getView());
 
     }
 

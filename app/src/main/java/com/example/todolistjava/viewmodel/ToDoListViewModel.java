@@ -80,7 +80,7 @@ public class ToDoListViewModel extends AndroidViewModel{
 
     }
 
-    public void addToDoOnFirebase(ToDo toDo, Context context, View view){
+    public void addToDoToFirebase(ToDo toDo, Context context, View view){
         HashMap<String,Object> toDoMap = new HashMap<>();
         toDoMap.put("toDoTitle",toDo.getToDoTitle());
         toDoMap.put("toDoContent",toDo.getToDoContent());
