@@ -3,6 +3,8 @@ package com.example.todolistjava.adapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -29,6 +31,10 @@ public class ToDoRecyclerAdapter extends RecyclerView.Adapter<ToDoRecyclerAdapte
 
     @Override
     public void onBindViewHolder(@NonNull ToDoRecyclerAdapter.ToDoViewHolder holder, int position) {
+        TextView toDoTitleText = holder.itemView.findViewById(R.id.rowTitleText);
+        ImageView toDoDegreeImage = holder.itemView.findViewById(R.id.rowDegreeImageView);
+        TextView toDoDateText = holder.itemView.findViewById(R.id.rowDateText);
+         // cardview background
 
 
 

@@ -7,6 +7,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -46,6 +47,13 @@ public class ToDoListFragment extends Fragment {
         viewModel = ViewModelProviders.of(this).get(ToDoListViewModel.class);
 
         viewModel.getToDoListFromFirebase(getContext());
+
+        fragmentBinding.floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Navigation.findNavController(v).navigate(R.id.action_toDoListFragment_to_addToDoListFragment);
+            }
+        });
 
     }
 
