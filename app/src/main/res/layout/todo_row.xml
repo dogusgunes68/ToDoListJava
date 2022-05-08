@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:id="@+id/toDoRowLinearLayout"
     android:orientation="vertical">
 
     <TextView
@@ -17,22 +18,21 @@
         android:hint="To Do Title">
 
     </TextView>
+
+    <TextView
+        android:id="@+id/toDoIdText"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:textAlignment="center"
+        android:visibility="gone"
+        android:text="">
+
+    </TextView>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
-
-        <ImageView
-            android:id="@+id/rowDegreeImageView"
-            android:layout_width="80dp"
-            android:layout_height="40dp"
-            android:src="@drawable/ic_launcher_background"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:layout_marginLeft="30dp">
-
-        </ImageView>
-
 
             <TextView
                 android:id="@+id/rowDateText"
@@ -49,7 +49,7 @@
             <ImageView
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
-                android:id="@+id/editToDoImage"
+                android:id="@+id/editToDoImageView"
                 android:layout_width="60dp"
                 android:layout_height="40dp"
                 android:background="@drawable/ic_baseline_edit_24"

@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -13,12 +14,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.todolistjava.R;
 import com.example.todolistjava.model.ToDo;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ToDoRecyclerAdapter extends RecyclerView.Adapter<ToDoRecyclerAdapter.ToDoViewHolder> {
 
-    List<ToDo> toDoList;
-    public ToDoRecyclerAdapter(List<ToDo> toDoList){
+    ArrayList<ToDo> toDoList;
+    public ToDoRecyclerAdapter(ArrayList<ToDo> toDoList){
          this.toDoList = toDoList;
     }
 
@@ -31,12 +33,18 @@ public class ToDoRecyclerAdapter extends RecyclerView.Adapter<ToDoRecyclerAdapte
 
     @Override
     public void onBindViewHolder(@NonNull ToDoRecyclerAdapter.ToDoViewHolder holder, int position) {
-        TextView toDoTitleText = holder.itemView.findViewById(R.id.rowTitleText);
-        ImageView toDoDegreeImage = holder.itemView.findViewById(R.id.rowDegreeImageView);
-        TextView toDoDateText = holder.itemView.findViewById(R.id.rowDateText);
+
+        holder.toDoIdText.setText(toDoList.get(position).getId());
+        holder.toDoTitleText.setText(toDoList.get(position).getToDoTitle());
+        holder.toDoDateText.setText(toDoList.get(position).getDate());
+        holder.linearLayout.setBackgroundColor(Integer.parseInt(toDoList.get(position).getColor()));
+        holder.editToDoImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(holder.itemView.getContext(),"Clicked",Toast.LENGTH_LONG).show();
+            }
+        });
          // cardview background
-
-
 
     }
 
@@ -45,8 +53,10 @@ public class ToDoRecyclerAdapter extends RecyclerView.Adapter<ToDoRecyclerAdapte
         return toDoList.size();
     }
 
-    public void setToDoList(List<ToDo> newToDoList){
-        toDoList = newToDoList;
+    public void setToDoList(ArrayList<ToDo> newToDoList){
+        toDoList.clear();
+        toDoList.addAll(newToDoList);
+        notifyDataSetChanged();
     }
 
     public void updateData(){
@@ -54,8 +64,17 @@ public class ToDoRecyclerAdapter extends RecyclerView.Adapter<ToDoRecyclerAdapte
     }
 
     public class ToDoViewHolder extends RecyclerView.ViewHolder {
+        TextView toDoIdText,toDoTitleText,toDoDateText;
+        ImageView editToDoImageView;
+        LinearLayout linearLayout;
+
         public ToDoViewHolder(@NonNull View itemView) {
             super(itemView);
+            toDoIdText = itemView.findViewById(R.id.toDoIdText);
+            toDoTitleText = itemView.findViewById(R.id.rowTitleText);
+            toDoDateText = itemView.findViewById(R.id.rowDateText);
+            editToDoImageView = itemView.findViewById(R.id.editToDoImageView);
+            linearLayout = itemView.findViewById(R.id.toDoRowLinearLayout);
         }
     }
 }

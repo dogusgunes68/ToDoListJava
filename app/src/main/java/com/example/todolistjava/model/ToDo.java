@@ -7,7 +7,15 @@ public class ToDo {
     private String date;
     private String color;
 
-    String id = null;
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    private String id = null;
 
     public ToDo(String toDoTitle, String toDoContent, String userEmail, String date,String color){
         this.toDoTitle = toDoTitle;

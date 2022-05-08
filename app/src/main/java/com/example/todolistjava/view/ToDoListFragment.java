@@ -8,20 +8,26 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.todolistjava.R;
+import com.example.todolistjava.adapter.ToDoRecyclerAdapter;
 import com.example.todolistjava.databinding.FragmentToDoListBinding;
 import com.example.todolistjava.model.ToDo;
 import com.example.todolistjava.viewmodel.ToDoListViewModel;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class ToDoListFragment extends Fragment {
 
+
+    private ToDoRecyclerAdapter toDoRecyclerAdapter = new ToDoRecyclerAdapter(new ArrayList<>());
 
     private FragmentToDoListBinding fragmentBinding;
     private ToDoListViewModel viewModel;
@@ -46,9 +52,13 @@ public class ToDoListFragment extends Fragment {
         fragmentBinding = FragmentToDoListBinding.bind(view);
         viewModel = ViewModelProviders.of(this).get(ToDoListViewModel.class);
 
-        ///viewModel.getToDoListFromFirebase(getContext());
+        viewModel.getToDoListFromFirebase(getContext());
 
-        //observeLiveData();
+
+        fragmentBinding.toDoRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        fragmentBinding.toDoRecyclerView.setAdapter(toDoRecyclerAdapter);
+
+        observeLiveData();
 
         fragmentBinding.floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,12 +70,15 @@ public class ToDoListFragment extends Fragment {
     }
 
     public void observeLiveData(){
-        viewModel.toDoList.observe(getViewLifecycleOwner(), new Observer<List<ToDo>>() {
+        viewModel.toDoList.observe(getViewLifecycleOwner(), new Observer<ArrayList<ToDo>>() {
             @Override
-            public void onChanged(List<ToDo> toDos) {
+            public void onChanged(ArrayList<ToDo> toDos) {
                 if (!toDos.isEmpty()) {
                     fragmentBinding.toDoRecyclerView.setVisibility(View.VISIBLE);
                     //rec adapter
+
+                    toDoRecyclerAdapter.setToDoList(toDos);
+
                 }
             }
         });

@@ -14,14 +14,17 @@ import androidx.navigation.Navigation;
 import com.example.todolistjava.R;
 import com.example.todolistjava.model.ToDo;
 import com.example.todolistjava.model.User;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
@@ -38,14 +41,14 @@ public class ToDoListViewModel extends AndroidViewModel{
     private FirebaseFirestore firestore = FirebaseFirestore.getInstance();
     private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
 
-    public MutableLiveData<List<ToDo>> toDoList = new MutableLiveData<>();
+    public MutableLiveData<ArrayList<ToDo>> toDoList = new MutableLiveData<>();
     public MutableLiveData<ToDo> toDo = new MutableLiveData<>();
     public MutableLiveData<Boolean> toDoLoading = new MutableLiveData<>();
     public MutableLiveData<Boolean> errorMessage = new MutableLiveData<>();
-    private List<ToDo> tempToDoList = new ArrayList<>();
+    private ArrayList<ToDo> tempToDoList = new ArrayList<>();
     private ToDo tempToDo;
 
-    public void showToDoList(List<ToDo> takenToDoList){
+    public void showToDoList(ArrayList<ToDo> takenToDoList){
         toDoList.setValue(takenToDoList);
         toDoLoading.setValue(false);
         errorMessage.setValue(false);
@@ -135,27 +138,31 @@ public class ToDoListViewModel extends AndroidViewModel{
 
         toDoLoading.setValue(true);
 
-        firestore.collection("ToDoList").whereEqualTo("toDoUserEmail",firebaseAuth.getCurrentUser().getEmail()).addSnapshotListener(new EventListener<QuerySnapshot>() {
+        firestore.collection("ToDoList").whereEqualTo("toDoUserEmail",firebaseAuth.getCurrentUser().getEmail()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
-            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-                if (error != null){
-                    errorMessage.setValue(true);
-                    toDoLoading.setValue(false);
-                    Toast.makeText(context,error.getMessage(),Toast.LENGTH_LONG).show();
-                }else {
-                    if (!value.getDocuments().isEmpty()){
-                        for (Object document : value.getDocuments().toArray()){
-                            tempToDoList.add((ToDo) document);
-
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()){
+                    if (!task.getResult().isEmpty()){
+                        for (QueryDocumentSnapshot document : task.getResult()){
+                            ToDo toDo = new ToDo(document.get("toDoTitle").toString(),
+                                    document.get("toDoContent").toString(),
+                                    document.get("toDoUserEmail").toString(),
+                                    document.get("toDoDate").toString(),
+                                    document.get("toDoColor").toString());
+                            toDo.setId(document.getId());
+                            tempToDoList.add(toDo);
                         }
                     }else {
                         Toast.makeText(context,"Empty List",Toast.LENGTH_LONG).show();
                     }
                     showToDoList(tempToDoList);
                     tempToDoList.clear();
+
+                }else {
+                    errorMessage.setValue(true);
+                    toDoLoading.setValue(false);
+                    Toast.makeText(context,"there is an error",Toast.LENGTH_LONG).show();
                 }
-
-
             }
         });
 
