@@ -1,4 +1,4 @@
-package com.example.todolistjava.view;
+ package com.example.todolistjava.view;
 
 import android.os.Bundle;
 
@@ -46,7 +46,9 @@ public class ToDoListFragment extends Fragment {
         fragmentBinding = FragmentToDoListBinding.bind(view);
         viewModel = ViewModelProviders.of(this).get(ToDoListViewModel.class);
 
-        //viewModel.getToDoListFromFirebase(getContext());
+        ///viewModel.getToDoListFromFirebase(getContext());
+
+        //observeLiveData();
 
         fragmentBinding.floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override

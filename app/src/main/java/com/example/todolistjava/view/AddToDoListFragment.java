@@ -80,7 +80,7 @@ public class AddToDoListFragment extends Fragment {
 
         List<String> colorList = new ArrayList();
         colorList.addAll(Arrays.asList(new String[]{
-                "#FFFF0000","#1DE9B6",
+                "#FFD2C8","#1DE9B6",
                 "#FF00FF00","#D500F9",
                 "#00E5FF","#FF9100",
                 "#FFFFFF00","#FFFFFFFF",
