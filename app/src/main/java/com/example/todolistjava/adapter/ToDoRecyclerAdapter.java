@@ -9,6 +9,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.todolistjava.R;
@@ -38,12 +39,15 @@ public class ToDoRecyclerAdapter extends RecyclerView.Adapter<ToDoRecyclerAdapte
         holder.toDoTitleText.setText(toDoList.get(position).getToDoTitle());
         holder.toDoDateText.setText(toDoList.get(position).getDate());
         holder.linearLayout.setBackgroundColor(Integer.parseInt(toDoList.get(position).getColor()));
-        holder.editToDoImageView.setOnClickListener(new View.OnClickListener() {
+
+
+        holder.linearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(holder.itemView.getContext(),"Clicked",Toast.LENGTH_LONG).show();
+                Navigation.findNavController(v).navigate(R.id.action_toDoListFragment_to_addToDoListFragment);
             }
         });
+
          // cardview background
 
     }
@@ -65,7 +69,6 @@ public class ToDoRecyclerAdapter extends RecyclerView.Adapter<ToDoRecyclerAdapte
 
     public class ToDoViewHolder extends RecyclerView.ViewHolder {
         TextView toDoIdText,toDoTitleText,toDoDateText;
-        ImageView editToDoImageView;
         LinearLayout linearLayout;
 
         public ToDoViewHolder(@NonNull View itemView) {
@@ -73,7 +76,6 @@ public class ToDoRecyclerAdapter extends RecyclerView.Adapter<ToDoRecyclerAdapte
             toDoIdText = itemView.findViewById(R.id.toDoIdText);
             toDoTitleText = itemView.findViewById(R.id.rowTitleText);
             toDoDateText = itemView.findViewById(R.id.rowDateText);
-            editToDoImageView = itemView.findViewById(R.id.editToDoImageView);
             linearLayout = itemView.findViewById(R.id.toDoRowLinearLayout);
         }
     }
