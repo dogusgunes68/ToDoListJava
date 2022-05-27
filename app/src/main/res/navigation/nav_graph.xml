@@ -36,6 +36,9 @@
         <action
             android:id="@+id/action_toDoListFragment_to_addToDoListFragment"
             app:destination="@id/addToDoListFragment" />
+        <action
+            android:id="@+id/action_toDoListFragment_to_editToDoListFragment"
+            app:destination="@id/editToDoListFragment" />
     </fragment>
     <fragment
         android:id="@+id/addToDoListFragment"
@@ -45,5 +48,16 @@
         <action
             android:id="@+id/action_addToDoListFragment_to_toDoListFragment"
             app:destination="@id/toDoListFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/editToDoListFragment"
+        android:name="com.example.todolistjava.view.EditToDoListFragment"
+        android:label="EditToDoListFragment" >
+        <action
+            android:id="@+id/action_editToDoListFragment_to_toDoListFragment"
+            app:destination="@id/toDoListFragment" />
+        <argument
+            android:name="toDoId"
+            app:argType="string" />
     </fragment>
 </navigation>

@@ -63,4 +63,8 @@ public class ColorRecyclerAdapter extends RecyclerView.Adapter<ColorRecyclerAdap
             colorImageView = itemView.findViewById(R.id.rowColorImageView);
         }
     }
+
+    public void setRelativeLayout(RelativeLayout relativeLayout){
+        this.relativeLayout = relativeLayout;
+    }
 }

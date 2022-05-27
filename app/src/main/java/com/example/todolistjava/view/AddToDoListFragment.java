@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -70,7 +71,7 @@ public class AddToDoListFragment extends Fragment {
         fragmentBinding.addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addToDo();
+                addToDo(v);
             }
         });
 
@@ -103,7 +104,7 @@ public class AddToDoListFragment extends Fragment {
         myDialog.show();
     }
 
-    public void addToDo(){
+    public void addToDo(View view){
         String toDoTitle = fragmentBinding.toDoTitleText.getText().toString();
         String toDoContent = fragmentBinding.toDoContentText.getText().toString();
         String userEmail = firebaseAuth.getCurrentUser().getEmail();
@@ -116,8 +117,16 @@ public class AddToDoListFragment extends Fragment {
 
         ToDo toDo = new ToDo(toDoTitle,toDoContent,userEmail,date,color);
 
-        viewModel.addToDoToFirebase(toDo,getContext(),getView());
+        viewModel.addToDoToFirebase(toDo,getContext(),view);
+        Navigation.findNavController(view).navigate(R.id.action_addToDoListFragment_to_toDoListFragment);
 
+
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        fragmentBinding = null;
     }
 
 

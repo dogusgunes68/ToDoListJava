@@ -26,6 +26,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.SetOptions;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -94,7 +95,6 @@ public class ToDoListViewModel extends AndroidViewModel{
             @Override
             public void onSuccess(DocumentReference documentReference) {
                 Toast.makeText(context,"Successfuly",Toast.LENGTH_LONG).show();
-                Navigation.findNavController(view).navigate(R.id.action_addToDoListFragment_to_toDoListFragment);
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -105,7 +105,7 @@ public class ToDoListViewModel extends AndroidViewModel{
         });
     }
 
-    public void getToDoByIdFromFirebase(Context context,Long toDoId){
+    public void getToDoByIdFromFirebase(Context context,String toDoId){
         toDoLoading.setValue(true);
 
         firestore.collection("ToDoList").document(String.valueOf(toDoId)).addSnapshotListener(new EventListener<DocumentSnapshot>() {
@@ -163,6 +163,24 @@ public class ToDoListViewModel extends AndroidViewModel{
                     toDoLoading.setValue(false);
                     Toast.makeText(context,"there is an error",Toast.LENGTH_LONG).show();
                 }
+            }
+        });
+
+    }
+
+    public void updateToDo(String toDoId,ToDo todo, Context context, View view){
+
+        firestore.collection("ToDoList").document(toDoId).set(todo, SetOptions.merge()).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Toast.makeText(context,"Saccessfuly!!!",Toast.LENGTH_LONG).show();
+                Navigation.findNavController(view).navigate(R.id.action_editToDoListFragment_to_toDoListFragment);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(context,e.getLocalizedMessage(),Toast.LENGTH_LONG).show();
+
             }
         });
 

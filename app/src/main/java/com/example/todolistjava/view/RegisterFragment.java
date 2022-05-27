@@ -89,4 +89,10 @@ public class RegisterFragment extends Fragment {
         });
 
     }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        fragmentBinding = null;
+    }
 }
