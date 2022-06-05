@@ -4,6 +4,10 @@ import android.app.Dialog;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -12,11 +16,6 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.example.todolistjava.R;
 import com.example.todolistjava.adapter.ColorRecyclerAdapter;
@@ -117,7 +116,7 @@ public class AddToDoListFragment extends Fragment {
 
         ToDo toDo = new ToDo(toDoTitle,toDoContent,userEmail,date,color);
 
-        viewModel.addToDoToFirebase(toDo,getContext(),view);
+        viewModel.addToDoToFirebase(toDo,getContext());
         Navigation.findNavController(view).navigate(R.id.action_addToDoListFragment_to_toDoListFragment);
 
 

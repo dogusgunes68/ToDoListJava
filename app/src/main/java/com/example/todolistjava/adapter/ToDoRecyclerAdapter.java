@@ -6,10 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
@@ -87,9 +85,6 @@ public class ToDoRecyclerAdapter extends RecyclerView.Adapter<ToDoRecyclerAdapte
             if (constraint.toString().isEmpty()){
                 filteredList.addAll(toDoListAll);
             }else {
-                System.out.println("else");
-                System.out.println(toDoListAll.isEmpty());
-
                 for (ToDo toDo : toDoListAll){
                     if (toDo.getToDoTitle().toLowerCase().contains(constraint.toString().toLowerCase())){
                         filteredList.add(toDo);

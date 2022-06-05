@@ -39,6 +39,9 @@
         <action
             android:id="@+id/action_toDoListFragment_to_editToDoListFragment"
             app:destination="@id/editToDoListFragment" />
+        <action
+            android:id="@+id/action_toDoListFragment_to_favoritesFragment"
+            app:destination="@id/favoritesFragment" />
     </fragment>
     <fragment
         android:id="@+id/addToDoListFragment"
@@ -59,5 +62,20 @@
         <argument
             android:name="toDoId"
             app:argType="string" />
+        <action
+            android:id="@+id/action_editToDoListFragment_to_favoritesFragment"
+            app:destination="@id/favoritesFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/favoritesFragment"
+        android:name="com.example.todolistjava.view.FavoritesFragment"
+        android:label="fragment_favorites"
+        tools:layout="@layout/fragment_favorites" >
+        <action
+            android:id="@+id/action_favoritesFragment_to_toDoListFragment"
+            app:destination="@id/toDoListFragment" />
+        <action
+            android:id="@+id/action_favoritesFragment_to_editToDoListFragment"
+            app:destination="@id/editToDoListFragment" />
     </fragment>
 </navigation>

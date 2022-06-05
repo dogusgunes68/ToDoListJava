@@ -13,7 +13,6 @@ import androidx.navigation.Navigation;
 
 import com.example.todolistjava.R;
 import com.example.todolistjava.model.ToDo;
-import com.example.todolistjava.model.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -32,20 +31,19 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class ToDoListViewModel extends AndroidViewModel{
-
-    public ToDoListViewModel(Application application){
+public class FavoritesViewModel extends AndroidViewModel {
+    public FavoritesViewModel(@NonNull Application application) {
         super(application);
-
     }
 
-    private FirebaseFirestore firestore = FirebaseFirestore.getInstance();
-    private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
 
     public MutableLiveData<List<ToDo>> toDoList = new MutableLiveData<>();
     public MutableLiveData<ToDo> toDo = new MutableLiveData<>();
+
     public MutableLiveData<Boolean> toDoLoading = new MutableLiveData<>();
     public MutableLiveData<Boolean> errorMessage = new MutableLiveData<>();
+    private FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+    private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
     private ArrayList<ToDo> tempToDoList = new ArrayList<>();
     private ToDo tempToDo;
 
@@ -61,30 +59,30 @@ public class ToDoListViewModel extends AndroidViewModel{
         errorMessage.setValue(false);
     }
 
-    public void addUserOnFirebase(User user, Context context){
 
-        HashMap<String,String> userMap = new HashMap<>();
-
-        userMap.put("username",user.getName());
-        userMap.put("usersurname",user.getSurname());
-        userMap.put("useremail",user.getEmail());
-
-        firestore.collection("Users").add(userMap).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-            @Override
-            public void onSuccess(DocumentReference documentReference) {
-                Toast.makeText(context,"REGISTERED",Toast.LENGTH_LONG).show();
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(context,e.getMessage(),Toast.LENGTH_LONG).show();
-            }
-        });
-
+    public void addToDoToFirebase(ToDo toDo, Context context){
+            HashMap<String,Object> toDoMap = new HashMap<>();
+            toDoMap.put("toDoTitle",toDo.getToDoTitle());
+            toDoMap.put("toDoContent",toDo.getToDoContent());
+            toDoMap.put("toDoDate",toDo.getDate());
+            toDoMap.put("toDoUserEmail",toDo.getUserEmail());
+            toDoMap.put("toDoColor",toDo.getColor());
+            firestore.collection("Favorites").add(toDoMap).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                @Override
+                public void onSuccess(DocumentReference documentReference) {
+                    Toast.makeText(context,"Successfuly",Toast.LENGTH_LONG).show();
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    errorMessage.setValue(true);
+                    Toast.makeText(context,e.getMessage(),Toast.LENGTH_LONG).show();
+                }
+            });
     }
 
     public void  deleteToDo(String id,Context context){
-        firestore.collection("ToDoList").document(id).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+        firestore.collection("Favorites").document(id).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
                 getToDoListFromFirebase(context);
@@ -97,31 +95,10 @@ public class ToDoListViewModel extends AndroidViewModel{
         });
     }
 
-    public void addToDoToFirebase(ToDo toDo, Context context){
-        HashMap<String,Object> toDoMap = new HashMap<>();
-        toDoMap.put("toDoTitle",toDo.getToDoTitle());
-        toDoMap.put("toDoContent",toDo.getToDoContent());
-        toDoMap.put("toDoDate",toDo.getDate());
-        toDoMap.put("toDoUserEmail",toDo.getUserEmail());
-        toDoMap.put("toDoColor",toDo.getColor());
-        firestore.collection("ToDoList").add(toDoMap).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-            @Override
-            public void onSuccess(DocumentReference documentReference) {
-                Toast.makeText(context,"Successfuly",Toast.LENGTH_LONG).show();
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                errorMessage.setValue(true);
-                Toast.makeText(context,e.getMessage(),Toast.LENGTH_LONG).show();
-            }
-        });
-    }
-
     public void getToDoByIdFromFirebase(Context context,String toDoId){
         toDoLoading.setValue(true);
 
-        firestore.collection("ToDoList").document(String.valueOf(toDoId)).addSnapshotListener(new EventListener<DocumentSnapshot>() {
+        firestore.collection("Favorites").document(String.valueOf(toDoId)).addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
                 if (error!=null){
@@ -151,7 +128,7 @@ public class ToDoListViewModel extends AndroidViewModel{
 
         toDoLoading.setValue(true);
 
-        firestore.collection("ToDoList").whereEqualTo("toDoUserEmail",firebaseAuth.getCurrentUser().getEmail()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        firestore.collection("Favorites").whereEqualTo("toDoUserEmail",firebaseAuth.getCurrentUser().getEmail()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()){
@@ -183,7 +160,7 @@ public class ToDoListViewModel extends AndroidViewModel{
 
     public void updateToDo(String toDoId,ToDo todo, Context context, View view){
 
-        firestore.collection("ToDoList").document(toDoId).set(todo, SetOptions.merge()).addOnSuccessListener(new OnSuccessListener<Void>() {
+        firestore.collection("Favorites").document(toDoId).set(todo, SetOptions.merge()).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
                 Toast.makeText(context,"Saccessfuly!!!",Toast.LENGTH_LONG).show();
@@ -198,9 +175,6 @@ public class ToDoListViewModel extends AndroidViewModel{
         });
 
     }
-
-
-
 
 
 

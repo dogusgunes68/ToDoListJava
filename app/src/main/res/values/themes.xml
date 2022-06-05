@@ -14,17 +14,6 @@
         <!-- Customize your theme here. -->
     </style>
 
-    <style name="ShapeAppearance.ToDoListJava.MediumComponent" parent="ShapeAppearance.MaterialComponents.MediumComponent">
-        <item name="cornerFamily">cut</item>
-        <item name="cornerSize">8dp</item>
-    </style>
 
-    <style name="ShapeAppearance.ToDoListJava.MediumComponent.Rounded" parent="ShapeAppearance.MaterialComponents.MediumComponent">
-        <item name="cornerFamilyTopLeft">cut</item>
-        <item name="cornerFamilyBottomRight">cut</item>
-        <item name="cornerSizeTopLeft">20dp</item>
-        <item name="cornerSizeBottomRight">20dp</item>
-
-    </style>
     
 </resources>

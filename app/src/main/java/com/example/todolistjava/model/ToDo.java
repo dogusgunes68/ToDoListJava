@@ -1,10 +1,24 @@
 package com.example.todolistjava.model;
 
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.Ignore;
+import androidx.room.PrimaryKey;
+@Entity
 public class ToDo {
+
+    @PrimaryKey(autoGenerate = true)
+    private long uid;
+
+    @ColumnInfo(name = "title")
     private String toDoTitle;
+    @ColumnInfo(name = "content")
     private String toDoContent;
+    @ColumnInfo(name = "usermail")
     private String userEmail;
+    @ColumnInfo(name = "date")
     private String date;
+    @ColumnInfo(name = "color")
     private String color;
 
     public String getId() {
@@ -15,8 +29,19 @@ public class ToDo {
         this.id = id;
     }
 
+
+    public Long getUid(){
+        return uid;
+    }
+
+    public void setUid(Long newUid){
+        uid = newUid;
+    }
+
+
     private String id = null;
 
+    @Ignore
     public ToDo(String toDoTitle, String toDoContent, String userEmail, String date,String color){
         this.toDoTitle = toDoTitle;
         this.toDoContent = toDoContent;
