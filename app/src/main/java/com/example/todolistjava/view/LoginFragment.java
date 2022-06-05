@@ -66,18 +66,23 @@ public class LoginFragment extends Fragment {
 
         String email = fragmentBinding.emailText.getText().toString();
         String password = fragmentBinding.passwordText.getText().toString();
-        firebaseAuth.signInWithEmailAndPassword(email,password).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
-            @Override
-            public void onSuccess(AuthResult authResult) {
-                //go to to do list fragment
-                Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_toDoListFragment);
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(getContext(),e.getMessage(),Toast.LENGTH_LONG).show();
-            }
-        });
+        if (email!=""||password!=""){
+            firebaseAuth.signInWithEmailAndPassword(email,password).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+                @Override
+                public void onSuccess(AuthResult authResult) {
+                    //go to to do list fragment
+                    Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_toDoListFragment);
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(getContext(),e.getMessage(),Toast.LENGTH_LONG).show();
+                }
+            });
+
+        }else {
+            Toast.makeText(getContext(),"Fields cant be empty",Toast.LENGTH_LONG).show();
+        }
 
     }
 

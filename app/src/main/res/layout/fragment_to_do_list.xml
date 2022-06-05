@@ -10,7 +10,7 @@
     android:layout_height="match_parent">
 
 
-    <RelativeLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
 
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -21,16 +21,19 @@
             android:id="@+id/errorMessageText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/loadingProgressBar"
+            android:layout_centerInParent="true"
             android:gravity="center"
             android:text="Error :("
             android:textAlignment="center"
             android:textColor="#717171"
             android:textSize="24sp"
             android:visibility="gone"
-            android:layout_centerInParent="true"
-            android:layout_below="@+id/loadingProgressBar"
 
-            >
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
         </TextView>
 
@@ -41,19 +44,19 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:visibility="gone"
-           >
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
         </ProgressBar>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/toDoRecyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_below="@+id/toolbar"
-            android:layout_marginTop="2dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="@+id/toolbar"
+            app:layout_constraintStart_toStartOf="@+id/toolbar"
             app:layout_constraintTop_toBottomOf="@+id/toolbar"></androidx.recyclerview.widget.RecyclerView>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -61,24 +64,29 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/toolbar"
-            android:layout_marginLeft="330dp"
-            android:layout_marginTop="520dp"
-            android:background="@drawable/plus"
-             />
+            android:layout_marginRight="32dp"
+            android:layout_marginBottom="32dp"
+            android:src="@drawable/ic_baseline_add"
+            android:visibility="visible"
+            app:backgroundTint="@color/black"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/toDoRecyclerView" />
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_centerInParent="true"
-            android:layout_height="wrap_content"
             android:background="?attr/colorPrimary"
             android:minHeight="?attr/actionBarSize"
             android:theme="?attr/actionBarTheme"
-             />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
 
-    </RelativeLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 

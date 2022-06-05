@@ -61,8 +61,16 @@
             android:layout_height="100dp"
             android:layout_below="@+id/linearLayout"
             android:layout_marginBottom="2dp"
+            android:background="@drawable/edittext_bg_black"
+            android:paddingLeft="30dp"
+            android:layout_margin="5dp"
             android:hint="Title"
             android:inputType="textMultiLine"
+            android:paddingRight="30dp"
+            android:textColor="@color/black"
+            android:maxLines="2"
+            android:maxLength="50"
+            android:textColorHint="#656667"
             android:textSize="24sp">
 
         </EditText>
@@ -76,7 +84,17 @@
             android:layout_alignParentBottom="true"
             android:layout_marginTop="4dp"
             android:layout_marginBottom="1dp"
+            android:background="@drawable/edittext_bg_black"
+            android:paddingLeft="30dp"
+            android:layout_margin="5dp"
+            android:maxLines="10"
+            android:textColor="@color/black"
+            android:gravity="top"
+            android:maxLength="150"
+            android:paddingTop="50dp"
+            android:paddingRight="30dp"
             android:hint="Content"
+            android:textColorHint="#656667"
             android:inputType="textMultiLine"
             android:textSize="24sp">
 
@@ -90,26 +108,19 @@
 
             <Button
                 android:id="@+id/saveButton"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
-                android:layout_width="180dp"
+                android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:layout_margin="20dp"
-                android:background="@color/white"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
                 android:text="Save"
-                android:textColor="@color/black"
+                android:background="@drawable/edittext_bg_black"
+                android:textColor="@color/white"
                 android:textSize="20sp"
                 android:textStyle="bold">
 
             </Button>
 
-            <ImageView
-                android:id="@+id/colorsImageView"
-                android:layout_width="90dp"
-                android:layout_height="60dp"
-                android:layout_margin="20dp"
-                android:background="@drawable/ic_baseline_color_lens_24">
-
-            </ImageView>
         </LinearLayout>
 
 

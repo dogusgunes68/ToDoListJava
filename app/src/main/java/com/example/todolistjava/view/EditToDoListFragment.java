@@ -4,6 +4,10 @@ import android.app.Dialog;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -13,15 +17,11 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
-
 import com.example.todolistjava.R;
 import com.example.todolistjava.adapter.ColorRecyclerAdapter;
 import com.example.todolistjava.databinding.FragmentEditToDoListBinding;
 import com.example.todolistjava.model.ToDo;
+import com.example.todolistjava.viewmodel.FavoritesViewModel;
 import com.example.todolistjava.viewmodel.ToDoListViewModel;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
@@ -34,7 +34,8 @@ import java.util.List;
 public class EditToDoListFragment extends Fragment {
 
     private FragmentEditToDoListBinding fragmentBinding;
-    private ToDoListViewModel viewModel;
+    private ToDoListViewModel toDoListViewModel;
+    private FavoritesViewModel favoritesViewModel;
     Dialog myDialog;
     private FirebaseAuth auth;
 
@@ -59,31 +60,48 @@ public class EditToDoListFragment extends Fragment {
         auth = FirebaseAuth.getInstance();
         myDialog = new Dialog(getContext());
 
-        viewModel = ViewModelProviders.of(this).get(ToDoListViewModel.class);
+        toDoListViewModel = ViewModelProviders.of(this).get(ToDoListViewModel.class);
+        favoritesViewModel = ViewModelProviders.of(this).get(FavoritesViewModel.class);
 
-        viewModel.getToDoByIdFromFirebase(getContext(),getArguments().getString("toDoId"));
-        observeToDo();
+        System.out.println(getArguments().getBoolean("isFavorite"));
 
-        fragmentBinding.saveButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String color = "#FFFFFFFF";
-                Drawable background = fragmentBinding.relativeLayout.getBackground();
-                if (background instanceof ColorDrawable){
-                    color = String.valueOf(((ColorDrawable) background).getColor());
+        if (getArguments().getBoolean("isFavorite") == true){
+            favoritesViewModel.getToDoByIdFromFirebase(getContext(),getArguments().getString("toDoId"));
+            fragmentBinding.saveButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String color = "#FFFFFFFF";
+                    Drawable background = fragmentBinding.relativeLayout.getBackground();
+                    if (background instanceof ColorDrawable){
+                        color = String.valueOf(((ColorDrawable) background).getColor());
+                    }
+                    ToDo toDo = new ToDo(fragmentBinding.toDoTitleText.getText().toString(),fragmentBinding.toDoContentText.getText().toString(),
+                            auth.getCurrentUser().getEmail(), Timestamp.now(),color);
+                    favoritesViewModel.updateToDo(getArguments().getString("toDoId"),toDo,getContext(),v);
                 }
-                ToDo toDo = new ToDo(fragmentBinding.toDoTitleText.getText().toString(),fragmentBinding.toDoContentText.getText().toString(),
-                        auth.getCurrentUser().getEmail(), Timestamp.now().toString(),color);
-                viewModel.updateToDo(getArguments().getString("toDoId"),toDo,getContext(),v);
-            }
-        });
+            });
+            observeFavorite();
+        }else {
+            toDoListViewModel.getToDoByIdFromFirebase(getContext(),getArguments().getString("toDoId"));
 
-        fragmentBinding.colorsImageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showColorsPopup();
-            }
-        });
+
+            fragmentBinding.saveButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String color = "#FFFFFFFF";
+                    Drawable background = fragmentBinding.relativeLayout.getBackground();
+                    if (background instanceof ColorDrawable){
+                        color = String.valueOf(((ColorDrawable) background).getColor());
+                    }
+                    ToDo toDo = new ToDo(fragmentBinding.toDoTitleText.getText().toString(),fragmentBinding.toDoContentText.getText().toString(),
+                            auth.getCurrentUser().getEmail(), Timestamp.now(),color);
+                    toDoListViewModel.updateToDo(getArguments().getString("toDoId"),toDo,getContext(),v);
+                }
+            });
+            observeToDo();
+        }
+
+
 
     }
     public void showColorsPopup(){
@@ -113,8 +131,8 @@ public class EditToDoListFragment extends Fragment {
         myDialog.show();
     }
 
-    public void observeToDo(){
-        viewModel.toDo.observe(getViewLifecycleOwner(), new Observer<ToDo>() {
+    public void observeFavorite(){
+        favoritesViewModel.toDo.observe(getViewLifecycleOwner(), new Observer<ToDo>() {
             @Override
             public void onChanged(ToDo toDo) {
                 if (toDo!=null){
@@ -128,7 +146,7 @@ public class EditToDoListFragment extends Fragment {
             }
         });
 
-        viewModel.toDoLoading.observe(getViewLifecycleOwner(), new Observer<Boolean>() {
+        favoritesViewModel.toDoLoading.observe(getViewLifecycleOwner(), new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean aBoolean) {
                 if (aBoolean){
@@ -141,7 +159,49 @@ public class EditToDoListFragment extends Fragment {
             }
         });
 
-        viewModel.errorMessage.observe(getViewLifecycleOwner(), new Observer<Boolean>() {
+        favoritesViewModel.errorMessage.observe(getViewLifecycleOwner(), new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean aBoolean) {
+                if (aBoolean){
+                    fragmentBinding.errorMessageText.setVisibility(View.VISIBLE);
+                    fragmentBinding.loadingProgressBar.setVisibility(View.GONE);
+                    fragmentBinding.relativeLayout.setVisibility(View.GONE);
+                }else {
+                    fragmentBinding.errorMessageText.setVisibility(View.GONE);
+                }
+            }
+        });
+    }
+
+    public void observeToDo(){
+        toDoListViewModel.toDo.observe(getViewLifecycleOwner(), new Observer<ToDo>() {
+            @Override
+            public void onChanged(ToDo toDo) {
+                if (toDo!=null){
+                    fragmentBinding.relativeLayout.setVisibility(View.VISIBLE);
+                    fragmentBinding.loadingProgressBar.setVisibility(View.GONE);
+                    fragmentBinding.errorMessageText.setVisibility(View.GONE);
+                    fragmentBinding.relativeLayout.setBackgroundColor(Integer.parseInt(toDo.getColor()));
+                    fragmentBinding.toDoTitleText.setText(toDo.getToDoTitle());
+                    fragmentBinding.toDoContentText.setText(toDo.getToDoContent());
+                }
+            }
+        });
+
+        toDoListViewModel.toDoLoading.observe(getViewLifecycleOwner(), new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean aBoolean) {
+                if (aBoolean){
+                    fragmentBinding.relativeLayout.setVisibility(View.GONE);
+                    fragmentBinding.loadingProgressBar.setVisibility(View.VISIBLE);
+                    fragmentBinding.errorMessageText.setVisibility(View.GONE);
+                }else {
+                    fragmentBinding.loadingProgressBar.setVisibility(View.GONE);
+                }
+            }
+        });
+
+        toDoListViewModel.errorMessage.observe(getViewLifecycleOwner(), new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean aBoolean) {
                 if (aBoolean){

@@ -11,19 +11,12 @@
     app:cardElevation="3dp"
     android:background="@drawable/border"
     app:cardUseCompatPadding="true">
-
-
-        <RelativeLayout
-            android:id="@+id/rowRelativeLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-
-            <LinearLayout
+       <LinearLayout
 
                 android:id="@+id/toDoRowLinearLayout"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:orientation="vertical">
 
                 <TextView
@@ -34,6 +27,9 @@
                     android:gravity="center"
                     android:hint="To Do Title"
                     android:textAlignment="center"
+                    android:paddingLeft="30dp"
+                    android:maxLines="2"
+                    android:maxLength="50"
                     android:textColor="@color/black"
                     android:textSize="18sp">
 
@@ -75,19 +71,6 @@
 
             </LinearLayout>
 
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_alignParentEnd="true"
-                android:layout_marginLeft="7dp"
-                android:layout_marginTop="15dp"
-                android:layout_marginRight="7dp"
-                android:layout_toRightOf="@+id/toDoRowLinearLayout"
-                android:src="@drawable/ic_baseline_star_24">
-
-            </ImageView>
-        </RelativeLayout>
 
 
     </androidx.cardview.widget.CardView>

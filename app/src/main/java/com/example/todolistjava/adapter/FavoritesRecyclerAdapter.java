@@ -34,7 +34,7 @@ public class FavoritesRecyclerAdapter extends RecyclerView.Adapter<FavoritesRecy
     public void onBindViewHolder(@NonNull FavoritesRecyclerAdapter.FavoriteViewHolder holder, int position) {
         holder.toDoIdText.setText(favorites.get(position).getId());
         holder.toDoTitleText.setText(favorites.get(position).getToDoTitle());
-        holder.todoDateText.setText(favorites.get(position).getDate());
+        holder.todoDateText.setText(favorites.get(position).getDate().toDate().toString());
         holder.toDoIdText.setText(favorites.get(position).getId().toString());
         holder.linearLayout.setBackgroundColor(Integer.parseInt(favorites.get(position).getColor()));
 
@@ -43,6 +43,7 @@ public class FavoritesRecyclerAdapter extends RecyclerView.Adapter<FavoritesRecy
             public void onClick(View v) {
                 Bundle bundle = new Bundle();
                 bundle.putString("toDoId", favorites.get(position).getId());
+                bundle.putBoolean("isFavorite",true);
                 Navigation.findNavController(v).navigate(R.id.action_favoritesFragment_to_editToDoListFragment,bundle);
             }
         });

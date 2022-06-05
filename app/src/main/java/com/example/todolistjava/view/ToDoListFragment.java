@@ -1,7 +1,8 @@
  package com.example.todolistjava.view;
 
-import android.app.AlertDialog;
+ import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.graphics.Canvas;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -13,6 +14,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
+import androidx.core.content.ContextCompat;
 import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
@@ -21,6 +23,7 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.todolistjava.R;
 import com.example.todolistjava.adapter.ToDoRecyclerAdapter;
@@ -33,6 +36,8 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
 
 
  public class ToDoListFragment extends Fragment {
@@ -74,8 +79,23 @@ import java.util.List;
         alertDialog = new AlertDialog.Builder(getContext());
 
 
-        observeLiveData();
 
+
+        fragmentBinding.swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+
+                    fragmentBinding.loadingProgressBar.setVisibility(View.VISIBLE);
+                    fragmentBinding.errorMessageText.setVisibility(View.GONE);
+                    fragmentBinding.toDoRecyclerView.setVisibility(View.GONE);
+                    toDoListViewModel.getToDoListFromFirebase(getContext());
+                    fragmentBinding.swipeRefreshLayout.setRefreshing(false);
+
+
+
+            }
+        });
+        observeLiveData();
         fragmentBinding.floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -113,6 +133,18 @@ import java.util.List;
             }
 
         }
+
+        @Override
+        public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
+            super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+            new RecyclerViewSwipeDecorator.Builder(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
+                    .addSwipeLeftBackgroundColor(ContextCompat.getColor(getContext(),R.color.red))
+                    .addSwipeLeftActionIcon(R.drawable.ic_baseline_delete)
+                    .addSwipeRightBackgroundColor(ContextCompat.getColor(getContext(),R.color.green))
+                    .addSwipeRightActionIcon(R.drawable.ic_baseline_star_24)
+                    .create()
+                    .decorate();
+        }
     };
 
 
@@ -142,6 +174,7 @@ import java.util.List;
                      public void onClick(View v) {
                          toDoList.add(position,deletedToDo);
                          toDoListViewModel.addToDoToFirebase(deletedToDo,getContext());
+                         toDoListViewModel.getToDoListFromFirebase(getContext());
                          toDoRecyclerAdapter.notifyItemInserted(position);
 
                      }
@@ -282,7 +315,9 @@ import java.util.List;
             }
         });
 
+
     }
+
 
     @Override
     public void onDestroy() {

@@ -43,7 +43,7 @@ public class ToDoRecyclerAdapter extends RecyclerView.Adapter<ToDoRecyclerAdapte
         System.out.println("adapter color:"+toDoList.get(position).getColor());
         holder.toDoIdText.setText(toDoList.get(position).getId());
         holder.toDoTitleText.setText(toDoList.get(position).getToDoTitle());
-        holder.toDoDateText.setText(toDoList.get(position).getDate());
+        holder.toDoDateText.setText(toDoList.get(position).getDate().toDate().toString());
         holder.linearLayout.setBackgroundColor(Integer.parseInt(toDoList.get(position).getColor()));
 
 
@@ -52,6 +52,7 @@ public class ToDoRecyclerAdapter extends RecyclerView.Adapter<ToDoRecyclerAdapte
             public void onClick(View v) {
                 Bundle bundle = new Bundle();
                 bundle.putString("toDoId", toDoList.get(position).getId());
+                bundle.putBoolean("isFavorite",false);
                 Navigation.findNavController(v).navigate(R.id.action_toDoListFragment_to_editToDoListFragment,bundle);
             }
         });
@@ -62,12 +63,18 @@ public class ToDoRecyclerAdapter extends RecyclerView.Adapter<ToDoRecyclerAdapte
 
     @Override
     public int getItemCount() {
-        return toDoList.size();
+
+        if (toDoList.size() == 0){
+            return 0;
+        }else {
+            return toDoList.size();
+        }
     }
 
     public void setToDoList(List<ToDo> newToDoList){
         toDoList.clear();
         toDoList.addAll(newToDoList);
+        toDoListAll.clear();
         toDoListAll.addAll(toDoList);
         notifyDataSetChanged();
     }

@@ -83,24 +83,29 @@ public class RegisterFragment extends Fragment {
         String email = fragmentBinding.emailText.getText().toString();
         String password = fragmentBinding.passwordText.getText().toString();
         String confirmPassword = fragmentBinding.confirmPasswordText.getText().toString();
-        if (password.equals(confirmPassword)) {
+        if (name!=""||surName!=""||email!=""||password!=""||confirmPassword!=""){
+            if (password.equals(confirmPassword)) {
 
-            firebaseAuth.createUserWithEmailAndPassword(email, password).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
-                @Override
-                public void onSuccess(AuthResult authResult) {
-                    Navigation.findNavController(view).navigate(R.id.action_registerFragment_to_loginFragment);
-                    addUser(name, surName, email);
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
-                }
-            });
+                firebaseAuth.createUserWithEmailAndPassword(email, password).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+                    @Override
+                    public void onSuccess(AuthResult authResult) {
+                        Navigation.findNavController(view).navigate(R.id.action_registerFragment_to_loginFragment);
+                        addUser(name, surName, email);
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                    }
+                });
 
+            }else {
+                Toast.makeText(getContext(),"Passwords didn't matched",Toast.LENGTH_LONG).show();
+            }
         }else {
-            Toast.makeText(getContext(),"Passwords didn't matched",Toast.LENGTH_LONG).show();
+            Toast.makeText(getContext(),"Fields cant be empty!!!",Toast.LENGTH_LONG).show();
         }
+
 
 
     }

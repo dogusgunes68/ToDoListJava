@@ -1,24 +1,22 @@
 package com.example.todolistjava.model;
 
-import androidx.room.ColumnInfo;
-import androidx.room.Entity;
-import androidx.room.Ignore;
-import androidx.room.PrimaryKey;
-@Entity
+import com.google.firebase.Timestamp;
+
+
 public class ToDo {
 
-    @PrimaryKey(autoGenerate = true)
+
     private long uid;
 
-    @ColumnInfo(name = "title")
+
     private String toDoTitle;
-    @ColumnInfo(name = "content")
+
     private String toDoContent;
-    @ColumnInfo(name = "usermail")
+
     private String userEmail;
-    @ColumnInfo(name = "date")
-    private String date;
-    @ColumnInfo(name = "color")
+
+    private Timestamp date;
+
     private String color;
 
     public String getId() {
@@ -41,8 +39,7 @@ public class ToDo {
 
     private String id = null;
 
-    @Ignore
-    public ToDo(String toDoTitle, String toDoContent, String userEmail, String date,String color){
+    public ToDo(String toDoTitle, String toDoContent, String userEmail, Timestamp date,String color){
         this.toDoTitle = toDoTitle;
         this.toDoContent = toDoContent;
         this.userEmail = userEmail;
@@ -86,11 +83,11 @@ public class ToDo {
         this.userEmail = userEmail;
     }
 
-    public String getDate() {
+    public Timestamp getDate() {
         return date;
     }
 
-    public void setDate(String date) {
+    public void setDate(Timestamp date) {
         this.date = date;
     }
 }

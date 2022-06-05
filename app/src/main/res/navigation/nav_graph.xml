@@ -65,6 +65,9 @@
         <action
             android:id="@+id/action_editToDoListFragment_to_favoritesFragment"
             app:destination="@id/favoritesFragment" />
+        <argument
+            android:name="isFavorite"
+            app:argType="boolean" />
     </fragment>
     <fragment
         android:id="@+id/favoritesFragment"

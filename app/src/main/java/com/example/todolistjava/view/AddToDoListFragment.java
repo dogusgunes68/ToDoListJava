@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -107,7 +108,7 @@ public class AddToDoListFragment extends Fragment {
         String toDoTitle = fragmentBinding.toDoTitleText.getText().toString();
         String toDoContent = fragmentBinding.toDoContentText.getText().toString();
         String userEmail = firebaseAuth.getCurrentUser().getEmail();
-        String date = Timestamp.now().toDate().toString();
+        Timestamp date = Timestamp.now();
 
         String color = "#FFFFFFFF";
         Drawable background = fragmentBinding.relativeLayout.getBackground();
@@ -116,9 +117,12 @@ public class AddToDoListFragment extends Fragment {
 
         ToDo toDo = new ToDo(toDoTitle,toDoContent,userEmail,date,color);
 
-        viewModel.addToDoToFirebase(toDo,getContext());
-        Navigation.findNavController(view).navigate(R.id.action_addToDoListFragment_to_toDoListFragment);
-
+        if (!toDoTitle.equals("")){
+            viewModel.addToDoToFirebase(toDo,getContext());
+            Navigation.findNavController(view).navigate(R.id.action_addToDoListFragment_to_toDoListFragment);
+        }else {
+            Toast.makeText(getContext(),"Title Cant Be Empty",Toast.LENGTH_LONG).show();
+        }
 
     }
 

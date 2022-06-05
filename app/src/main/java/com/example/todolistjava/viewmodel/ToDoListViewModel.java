@@ -18,6 +18,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -87,7 +88,7 @@ public class ToDoListViewModel extends AndroidViewModel{
         firestore.collection("ToDoList").document(id).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
-                getToDoListFromFirebase(context);
+                //getToDoListFromFirebase(context);
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -134,7 +135,7 @@ public class ToDoListViewModel extends AndroidViewModel{
                                 value.get("toDoTitle").toString(),
                                 value.get("toDoContent").toString(),
                                 value.get("toDoUserEmail").toString(),
-                                value.get("toDoDate").toString(),
+                                (Timestamp) value.get("toDoDate"),
                                 value.get("toDoColor").toString());
 
                     }else {
@@ -160,7 +161,7 @@ public class ToDoListViewModel extends AndroidViewModel{
                             ToDo toDo = new ToDo(document.get("toDoTitle").toString(),
                                     document.get("toDoContent").toString(),
                                     document.get("toDoUserEmail").toString(),
-                                    document.get("toDoDate").toString(),
+                                    (Timestamp) document.get("toDoDate"),
                                     document.get("toDoColor").toString());
                             toDo.setId(document.getId());
                             tempToDoList.add(toDo);
