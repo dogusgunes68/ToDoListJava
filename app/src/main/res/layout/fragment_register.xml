@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     tools:context=".view.RegisterFragment"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:background="@drawable/bb"
+    android:background="@drawable/aa"
     xmlns:tools="http://schemas.android.com/tools"
 
     >
@@ -152,7 +152,7 @@
         android:background="@drawable/btn_bg"
         android:text="Register"
         android:textAllCaps="false"
-        android:textColor="@color/black"
+        android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="@+id/confirmPasswordText"
         app:layout_constraintStart_toStartOf="@+id/confirmPasswordText"
         app:layout_constraintTop_toBottomOf="@+id/confirmPasswordText" />

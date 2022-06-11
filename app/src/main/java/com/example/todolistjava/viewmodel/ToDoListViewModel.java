@@ -149,10 +149,9 @@ public class ToDoListViewModel extends AndroidViewModel{
     }
 
     public void getToDoListFromFirebase(Context context){
-
         toDoLoading.setValue(true);
-
-        firestore.collection("ToDoList").whereEqualTo("toDoUserEmail",firebaseAuth.getCurrentUser().getEmail()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        firestore.collection("ToDoList").whereEqualTo("toDoUserEmail",firebaseAuth.getCurrentUser().getEmail()).get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()){
@@ -179,12 +178,12 @@ public class ToDoListViewModel extends AndroidViewModel{
                 }
             }
         });
-
     }
 
     public void updateToDo(String toDoId,ToDo todo, Context context, View view){
 
-        firestore.collection("ToDoList").document(toDoId).set(todo, SetOptions.merge()).addOnSuccessListener(new OnSuccessListener<Void>() {
+        firestore.collection("ToDoList").document(toDoId).set(todo, SetOptions.merge())
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
                 Toast.makeText(context,"Saccessfuly!!!",Toast.LENGTH_LONG).show();

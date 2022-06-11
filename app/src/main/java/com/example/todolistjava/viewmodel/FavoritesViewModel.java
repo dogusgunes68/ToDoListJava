@@ -33,10 +33,10 @@ import java.util.HashMap;
 import java.util.List;
 
 public class FavoritesViewModel extends AndroidViewModel {
+
     public FavoritesViewModel(@NonNull Application application) {
         super(application);
     }
-
 
     public MutableLiveData<List<ToDo>> toDoList = new MutableLiveData<>();
     public MutableLiveData<ToDo> toDo = new MutableLiveData<>();

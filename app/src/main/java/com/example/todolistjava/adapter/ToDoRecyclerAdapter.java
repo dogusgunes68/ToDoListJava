@@ -86,9 +86,7 @@ public class ToDoRecyclerAdapter extends RecyclerView.Adapter<ToDoRecyclerAdapte
     Filter filter = new Filter() {
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
-
             List<ToDo> filteredList = new ArrayList<>();
-
             if (constraint.toString().isEmpty()){
                 filteredList.addAll(toDoListAll);
             }else {
@@ -99,13 +97,10 @@ public class ToDoRecyclerAdapter extends RecyclerView.Adapter<ToDoRecyclerAdapte
                     }
                 }
             }
-
             FilterResults filterResults = new FilterResults();
             filterResults.values = filteredList;
-
             return filterResults;
         }
-
         @Override
         protected void publishResults(CharSequence constraint, FilterResults results) {
             toDoList.clear();

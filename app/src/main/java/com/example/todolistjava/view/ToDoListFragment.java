@@ -195,7 +195,6 @@ import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator
                     @Override
                     public boolean onQueryTextSubmit(String query) {
                         toDoRecyclerAdapter.getFilter().filter(query);
-
                         return true;
                     }
 
@@ -205,11 +204,9 @@ import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator
                         return true;
                     }
                 });
-
                 signOut(menuInflater,menu);
                 goToFavorites(menuInflater,menu);
             }
-
           @Override
             public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
                 return false;
